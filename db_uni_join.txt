@@ -75,19 +75,15 @@ superare ciascuno dei suoi esami
 
 ogni student quanti exam_id ha fatto di ogni exam ?
 
-SELECT COUNT(exam_student.exam_id), students.id as students
+SELECT COUNT(exam_student.exam_id)>1, students.id AS students, courses.id AS esame
 FROM students
 INNER JOIN exam_student
 ON students.id = exam_student.student_id
 INNER JOIN exams
 ON exam_student.exam_id = exams.id
-GROUP BY exam_student.exam_id, exam_student.student_id  
-
-
-SELECT COUNT(exam_student.exam_id) AS exam, students.id AS student, students.name, students.surname
-FROM students
-INNER JOIN exam_student
-ON students.id = exam_student.student_id
+INNER JOIN courses
+ON exams.course_id = courses.id
+GROUP BY exam_student.exam_id, exam_student.student_id, courses.id  
 
 
 
