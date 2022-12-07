@@ -1,12 +1,10 @@
 1. Selezionare tutti gli studenti iscritti al Corso di Laurea in Economia (1496)
-
+ 
 SELECT `students`.`registration_number` AS `students`, `degrees`.`name` AS `degree_name`
 FROM `students`
-INNER JOIN `courses`
-ON `students`.`degree_id` = `courses`.`degree_id`
 INNER JOIN `degrees`
-ON `courses`.`degree_id` = `degrees`.`id`
-WHERE `degrees`.`name` = "Corso di Laurea in Economia" 
+ON `students`.`degree_id` = `degrees`.`id`
+WHERE `degrees`.`name` = "Corso di Laurea in Economia"
 
 
 2. Selezionare tutti i Corsi di Laurea Magistrale del Dipartimento di Neuroscienze (1)
@@ -45,7 +43,7 @@ ORDER BY `students`.`surname`, `students`.`name`
 
 5. Selezionare tutti i corsi di laurea con i relativi corsi e insegnanti
 
-SELECT `degrees`.`name`, `courses`.`name`, `teachers`.`surname`,  `teachers`.`name`
+SELECT `degrees`.`name`, `courses`.`name` AS `course`, `teachers`.`surname` AS `teacher`,  `teachers`.`name`
 FROM `degrees`
 INNER JOIN `courses`
 ON `degrees`.`id` = `courses`.`degree_id`
@@ -57,7 +55,7 @@ ON `course_teacher`.`teacher_id` = `teachers`.`id`;
 
 6. Selezionare tutti i docenti che insegnano nel Dipartimento di Matematica (54)
 
-SELECT DISTINCT `teachers`.`id`,`teachers`.`surname`, `teachers`.`name` , `degrees`.`name` AS `degree`, `departments`.`name` AS `department_name`
+SELECT DISTINCT `teachers`.`id`,`teachers`.`surname`, `teachers`.`name` , `departments`.`name` AS `department_name`
 FROM `teachers`
 INNER JOIN `course_teacher`
 ON `teachers`.`id` = `course_teacher`.`teacher_id`
@@ -75,7 +73,8 @@ superare ciascuno dei suoi esami
 
 ogni student quanti exam_id ha fatto di ogni exam ?
 
-SELECT COUNT(exam_student.exam_id)>1, students.id AS students, courses.id AS esame
+SELECT COUNT(exams.id) AS times, students.id AS students, courses.id AS esame
+MAX (exam_student.vote) AS max_vote
 FROM students
 INNER JOIN exam_student
 ON students.id = exam_student.student_id
@@ -83,7 +82,8 @@ INNER JOIN exams
 ON exam_student.exam_id = exams.id
 INNER JOIN courses
 ON exams.course_id = courses.id
-GROUP BY exam_student.exam_id, exam_student.student_id, courses.id  
+GROUP BY students.id, courses.id  
+ORDER BY `students`  ASC
 
-
+                      
 
