@@ -79,40 +79,44 @@ if (isset($_SESSION["userId"]) && $_SESSION["userId"] != 0) {
 
 <body>
     <main>
-        <section class="container mt-5">
+        <!-- 12 se il login non va a buon fine, resta visibile la schermata login, altrimenti si va alle liste-->
+        <?php if (!isset($_SESSION["userId"]) || $_SESSION["userId"] === 0) { ?>
+            <section class="container mt-5">
 
-            <!-- 10 form login -->
-            <div class="row">
-                <div class="col-7 justify-content-center">
-                    <div class="card border-primary mb-3">
-                        <div class="card-header">Login</div>
-                        <div class="card-body">
-                            <form action="index.php" method="POST">
-                                <label for="username">Username</label>
-                                <input class="form-control" type="text" id="username" name="username">
-                                <label for="password">Password</label>
-                                <input class="form-control" type="password" name="password" id="password">
-                                <button class="btn btn-success mt-4">LOGIN</button>
-                            </form>
+                <!-- 10 form login -->
+                <div class="row">
+                    <div class="col-7 justify-content-center">
+                        <div class="card border-primary mb-3">
+                            <div class="card-header">Login</div>
+                            <div class="card-body">
+                                <form action="index.php" method="POST">
+                                    <label for="username">Username</label>
+                                    <input class="form-control" type="text" id="username" name="username">
+                                    <label for="password">Password</label>
+                                    <input class="form-control" type="password" name="password" id="password">
+                                    <button class="btn btn-success mt-4">LOGIN</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            <?php } else { ?>
 
-            <?php if (isset($result) && $result->num_rows > 0) { ?>
-                <h2>Liste</h2>
-                <ul class="list-group list-group-flush">
-                    <?php while ($row = $result->fetch_assoc()) { ?>
-                        <li class="list-group-item">
-                            <h4><?php echo $row["name"]  ?></h4>
-                            <h4><?php echo $row["email"] ?></h4>
-                        </li>
-                    <?php } ?>
-                </ul>
-            <?php } else if (isset($result) && $result->num_rows === 0) { ?>
-                <h3>Non ci sono risultati</h3>
-            <?php } ?>
-        </section>
+                <?php if (isset($result) && $result->num_rows > 0) { ?>
+                    <h2>Liste</h2>
+                    <ul class="list-group list-group-flush">
+                        <?php while ($row = $result->fetch_assoc()) { ?>
+                            <li class="list-group-item">
+                                <h4><?php echo $row["name"]  ?></h4>
+                                <h4><?php echo $row["email"] ?></h4>
+                            </li>
+                        <?php } ?>
+                    </ul>
+                <?php } else if (isset($result) && $result->num_rows === 0) { ?>
+                    <h3>Non ci sono risultati</h3>
+                <?php } ?>
+            </section>
+        <?php } ?>
     </main>
 
 </body>

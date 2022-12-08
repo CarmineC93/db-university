@@ -1,5 +1,10 @@
 
 <?php
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 //11 creo una funzione per il login in un file dedicato
 function login($username, $password, $conn)
 {
@@ -23,4 +28,15 @@ function login($username, $password, $conn)
     $stmt->execute();
     $result = $stmt->get_result();
     var_dump($result);
+
+    //se abbiamo un risultato il login ha funzionato
+    if ($result->num_rows > 0) {
+        $user = $result->fetch_assoc();
+        var_dump($user);
+        $_SESSION["userId"] = $user["id"];
+        $_SESSION["username"] = $user["username"];
+    } else {
+        $_SESSION["userId"] = 0;
+        $_SESSION["username"] = "";
+    }
 }
