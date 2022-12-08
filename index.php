@@ -62,6 +62,9 @@ if (isset($_SESSION["userId"]) && $_SESSION["userId"] != 0) {
         }
 
     */
+
+    //19 alla fine di tutto chiudo la connessione, la porta al database, aperta al punto 2
+    $conn->close();
 }
 ?>
 
@@ -79,7 +82,22 @@ if (isset($_SESSION["userId"]) && $_SESSION["userId"] != 0) {
 
 <body>
     <main>
-        <!-- 12 se il login non va a buon fine, resta visibile la schermata login, altrimenti si va alle liste-->
+        <!-- 17 impostiamo barra per il logout che di solito è una form-->
+        <header>
+            <nav class="navbar bg-light">
+                <div class="container_fluid">
+                    <a class="navbar-brand">
+                        <form action="logout.php" method="POST">
+                            <input type="text" value="1" name="logout" hidden>
+                            <!-- il valore è hidden perchè ci serve solo per la chiamata -->
+                            <button type="submit" class="btn btn-danger">LOGOUT</button>
+                        </form>
+                    </a>
+                </div>
+            </nav>
+        </header>
+
+        <!-- 16 se il login non va a buon fine, resta visibile la schermata login, altrimenti si va alle liste-->
         <?php if (!isset($_SESSION["userId"]) || $_SESSION["userId"] === 0) { ?>
             <section class="container mt-5">
 
