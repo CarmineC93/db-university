@@ -69,12 +69,12 @@ WHERE `departments`.`name` = "Dipartimento di Matematica"
 
 
 7. BONUS: Selezionare per ogni studente quanti tentativi d’esame ha sostenuto per
-superare ciascuno dei suoi esami
+superare ciascuno dei suoi esami 
 
-ogni student quanti exam_id ha fatto di ogni exam ?
+(superare >=18)
 
-SELECT COUNT(exams.id) AS times, students.id AS students, courses.id AS esame
-MAX (exam_student.vote) AS max_vote
+SELECT students.surname AS students, courses.id AS esame, COUNT(exams.id) AS times
+MAX(exam_student.vote) AS max_vote
 FROM students
 INNER JOIN exam_student
 ON students.id = exam_student.student_id
@@ -83,7 +83,7 @@ ON exam_student.exam_id = exams.id
 INNER JOIN courses
 ON exams.course_id = courses.id
 GROUP BY students.id, courses.id  
-ORDER BY `students`  ASC
+ORDER BY students.surname, courses.name 
 
                       
 
