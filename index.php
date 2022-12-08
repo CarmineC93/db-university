@@ -1,10 +1,14 @@
 <?php
+//12 colleghiamo il file del login
+require __DIR__ . "/login.php";
+
 //7 nel caso questi dati volessi farli vedere solo a chi fa login inizializzo una session
 //8 prima di inizializzare la session, controlliamo non ci sia già una session attiva
 if (session_status() === PHP_SESSION_NONE) { //status può dare tre valori= DISABLED, NONE, ACTIVE
     session_start();
 }
 
+//PARTE DI CONNESSIONE AL DATABASE
 //1 definendo questi dati, andiamo a presentarci al server, indicando i nostri dati
 define("DB_SERVERNAME", "localhost:3306"); //inserire porta del server di mysql port in MAMP
 define("DB_USERNAME", "root");
@@ -20,6 +24,14 @@ if ($conn && $conn->connect_error) {
     exit("connessione non riuscita");
     //N.B. tra exit() e die() la differrenza è solo semantica 
 } //altrimenti procediamo con collegamento a database con le varie query
+
+
+//PARTE DI LOGIN
+// 14
+if (isset($_POST["username"]) && isset($_POST["password"])) {
+    //15 richiamo la funzione nel file dedicato
+    login($_POST["username"], $_POST["password"], $conn);
+}
 
 //9 faccio un controllo prima di prelevare tutti i dati
 if (isset($_SESSION["userId"]) && $_SESSION["userId"] != 0) {
