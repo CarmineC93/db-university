@@ -65,6 +65,7 @@ if (isset($_SESSION["userId"]) && $_SESSION["userId"] != 0) {
 }
 ?>
 
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -98,7 +99,7 @@ if (isset($_SESSION["userId"]) && $_SESSION["userId"] != 0) {
                 </div>
             </div>
 
-            <?php if ($result && $result->num_rows > 0) { ?>
+            <?php if (isset($result) && $result->num_rows > 0) { ?>
                 <h2>Liste</h2>
                 <ul class="list-group list-group-flush">
                     <?php while ($row = $result->fetch_assoc()) { ?>

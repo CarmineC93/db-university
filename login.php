@@ -5,7 +5,22 @@ function login($username, $password, $conn)
 {
     //passiamo la password nella funzione dell'algoritmo md5
     $md5password = md5($password);
-    //ora controlliamo se l'utente del login è autorizzato, cioè se quell username e password sono nel database.Lo facciamo con un a query
-    $sql = "SELECT * FROM `users` WHERE `username` = '$username' AND `password` = '$md5password' ";
-    $result = $conn->query($sql);
+
+    //ora controlliamo se l'utente del login è autorizzato, cioè se quell username e password sono nel database.Lo facciamo con una query
+
+    //METODO SBAGLIATO E HACKERABILE
+    /*  $sql = "SELECT * FROM `users` WHERE `username` = '$username' AND `password` = '$md5password' ";
+            $result = $conn->query($sql);*/
+
+    //METODO CORRETTO E SICURO
+    //impedisce all'utente malintenzionato di passare codice direttamente nella query che ora sarà prima uno statement, una stringa
+    //prepariamo lo statement 
+    $stmt  = $conn->prepare("SELECT * 
+                            FROM `users` 
+                            WHERE `username` = ? AND `password` = ? "); //i ? sono segnaposti
+    //ora sostituiamo i segnaposto con funzione bind_params il cui primo paramatro è il tipo di dato passato (s=string, d=numero) 
+    $stmt->bind_param('ss', $username, $md5password);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    var_dump($result);
 }
